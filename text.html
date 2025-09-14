@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>基因词云图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        div{
+            width:760px;
+            height:450px;
+            border:1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div id="third2"></div>
+</body>
+
+<script>
+    function renderBarChart(){
+        const barchart=echarts.init(document.getElementById('third2'));
+        const option={
+            title:{
+                text:'文件大小分布-sample_04_0003',
+                left:'center'
+            },
+            tooltip:{
+                trigger:'axis',
+                axisPointer:{type:'shadow'},
+                formatter:params=>{
+                    const data=params[0];
+                    return `${data.seriesName}<br/>${data.name}:${Math.abs(data.value)}%`;
+                }
+            },
+            grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
+            yAxis:{
+                type:'category',
+                data:['0-1kb','1-3kb','3-5kb','5-10kb','10-100kb','>100kb'],
+                axisLine:{show:true},
+                axisTick:{show:false}
+            },
+            xAxis:{
+                type:'value',
+                min:-60,
+                max:60,
+                axisLabel:{
+                    formatter:value=>Math.abs(value)+'%'
+                }
+            },
+            series:[
+                {
+                    name:'负值',
+                    type:'bar',
+                    stack:'total',
+                    data:[-32.3,-1.49,-2.49,-2.49,-8.96,-2.49],
+                    itemStyle:{color:'#EE6666'},
+                    label:{
+                        show:true,
+                        position:'left',
+                        formatter:params=>Math.abs(params.value)+'%'
+                    }
+                },
+                {
+                    name:'正值',
+                    type:'bar',
+                    stack:'total',
+                    data:[32.3,4.49,1.12,1.69,10.67,1.69],
+                    itemStyle:{color:'#91CC75'},
+                    label:{
+                        show:true,
+                        position:'right',
+                        formatter:params=>params.value+'%'
+                    }
+                },
+            ]
+        }
+        barchart.setOption(option);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        renderBarChart();
+    })
+</script>
+</html>
